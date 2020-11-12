@@ -59,26 +59,19 @@ class BotChatWindow:
         ).click()
 
     def actual_response_text(self):
-        all_response_message_text = ""
-        response_message_text = ""
-
         response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
 
-        # TODO refactor
+        response_message_text = ""
+
         for response_element in response_elements:
-            if len(response_elements) > 1:
-                response_message_text = response_element.text + " "
-            else:
-                response_message_text = response_element.text
+            response_message_text += response_element.text + " "
 
-            all_response_message_text += response_message_text
-
-        return all_response_message_text.rstrip()
+        return response_message_text.rstrip()
 
     def expected_response_text(self, *text_to_assemble):
         assembled_text = ""
+
         for text in text_to_assemble:
-            print(text)
             assembled_text += text + " "
 
         return assembled_text.rstrip()

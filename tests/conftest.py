@@ -18,6 +18,7 @@ def browser():
     browser = Chrome(options=options, executable_path=browser_location)
 
     yield browser
+
     browser.quit()
 
 

@@ -1,0 +1,48 @@
+Failed to load resource: the server responded with a status of 404 ()
+stats.g.doubleclick.net/j/collect?t=dc&aip=1&_r=3&v=1&_v=j87&tid=UA-128791939-1&cid=525921156.1605093621&jid=1139025070&gjid=36665068&_gid=1718465827.1605093621&_u=AACAAEAAAAAAAC~&z=2009582567:1 Failed to load resource: the server responded with a status of 500 ()
+main.js:1 WebSocket connection to 'wss://chat.autofaq.ai/api/webhooks/widget/f4241354-7b39-4852-b9c5-855e18703afc/45fda659-b415-490a-b11b-48d20ada5e89/ws/4491eddd-bdc7-41b4-aa73-7c123dbe2393' failed: Error during WebSocket handshake: Unexpected response code: 502
+(anonymous) @ main.js:1
+Не могу загрузить сообщения с сервера
+
+
+
+
+import pytest
+
+
+@pytest.mark.parametrize(
+    "input_templates_text, response_templates_text",
+    [
+        (
+            f"{input_templates_text['HELLO_TEXT']}",
+            f"{response_templates_text['HELLO_TEXT']}",
+        ),
+        (
+            f"{input_templates_text['START_SCENARIO_TEXT']}",
+            f"{response_templates_text['OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT']} {response_templates_text['WHAT_DO_YOU_WANT_TEXT']}",
+        ),
+    ],
+)
+def test_food_scenario(bot_chat_window, input_templates_text, response_templates_text):
+    bot_chat_window.load()
+
+    bot_chat_window.input_text(input_templates_text)
+    assert bot_chat_window.response_text() == response_templates_text
+
+    # bot_chat_window.input_text(input_templates_text["START_SCENARIO_TEXT"])
+    # assert (
+    #     bot_chat_window.response_text()
+    #     == f"{response_templates_text['OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT']} {response_templates_text['WHAT_DO_YOU_WANT_TEXT']}"
+    # )
+
+    # bot_chat_window.click_button(input_templates_text["DUMPLINGS_TEXT"])
+    # assert (
+    #     bot_chat_window.response_text()
+    #     == f"{response_templates_text['WRONG_CHOICE_LETS_TRY_AGAIN_TEXT']} {response_templates_text['WHAT_DO_YOU_WANT_TEXT']}"
+    # )
+
+    # bot_chat_window.click_button(input_templates_text["PANCAKES_TEXT"])
+    # assert (
+    #     bot_chat_window.response_text()
+    #     == f"{response_templates_text['QUESTION_REMINDER_TEXT']} {input_templates_text['START_SCENARIO_TEXT']} {response_templates_text['BON_APPETIT_TEXT']}"
+    # )

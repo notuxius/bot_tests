@@ -37,6 +37,8 @@ class BotChatWindow:
         return element
 
     def wait_for_elements(self, *elem_locator):
+        # TODO refactor to without sleep
+        sleep(1)
         elements = WebDriverWait(self.browser, 5).until(
             elements_are_visible(*elem_locator)
         )
@@ -54,8 +56,6 @@ class BotChatWindow:
         all_response_message_text = ""
         response_message_text = ""
 
-        # TODO refactor into wait_for_elems
-        sleep(5)
         response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
 
         # TODO refactor

@@ -27,6 +27,7 @@ class BotChatWindow:
         self.browser.get(self.URL)
 
     def wait_for_elements(self, *elem_locator):
+        # TODO refactor without sleep
         sleep(1)
         elements = WebDriverWait(self.browser, 5).until(
             elements_are_visible(*elem_locator)
@@ -55,20 +56,22 @@ class BotChatWindow:
             )
         )[0].click()
 
-    def actual_response_text(self):
-        response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
-
-        response_message_text = ""
-
-        for response_element in response_elements:
-            response_message_text += response_element.text + " "
-
-        return response_message_text.rstrip()
-
-    def expected_response_text(self, *text_to_assemble):
+    def assemble_text(self, *text_to_assemble):
         assembled_text = ""
 
         for text in text_to_assemble:
+            if not isinstance(text, str):
+                text = text.text
+
             assembled_text += text + " "
 
         return assembled_text.rstrip()
+
+    def actual_response_text(self):
+        response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
+
+        return self.assemble_text(*response_elements)
+
+    def expected_response_text(self, *expected_text):
+
+        return self.assemble_text(*expected_text)

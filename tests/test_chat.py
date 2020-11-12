@@ -1,12 +1,19 @@
-def test_food_scenario(bot_chat_window, inputs, responses):
-    bot_chat_window.load()
+import pytest
 
+
+@pytest.mark.web
+@pytest.mark.smoke
+def test_hello_response(bot_chat_window, inputs, responses):
     bot_chat_window.input_text(inputs["HELLO_TEXT"])
     assert (
         bot_chat_window.actual_response_text()
         == bot_chat_window.expected_response_text(responses["HELLO_TEXT"])
     )
 
+
+@pytest.mark.web
+@pytest.mark.e2e
+def test_food_scenarios_responses(bot_chat_window, inputs, responses):
     bot_chat_window.input_text(inputs["START_SCENARIO_TEXT"])
     assert (
         bot_chat_window.actual_response_text()

@@ -25,8 +25,6 @@ class BotChatWindow:
 
     def __init__(self, browser):
         self.browser = browser
-
-    def load(self):
         self.browser.get(self.URL)
 
     def wait_for_element(self, *elem_locator):
@@ -52,6 +50,14 @@ class BotChatWindow:
         input_field.send_keys(input)
         input_field.send_keys(Keys.RETURN)
 
+    def click_button(self, button_text):
+        self.wait_for_element(
+            (
+                By.XPATH,
+                f'//div[contains(@class,"msg_block-last")]//button[contains(@class, "button") and (.="{button_text}")]',
+            )
+        ).click()
+
     def actual_response_text(self):
         all_response_message_text = ""
         response_message_text = ""
@@ -76,11 +82,3 @@ class BotChatWindow:
             assembled_text += text + " "
 
         return assembled_text.rstrip()
-
-    def click_button(self, button_text):
-        self.wait_for_element(
-            (
-                By.XPATH,
-                f'//div[contains(@class,"msg_block-last")]//button[contains(@class, "button") and (.="{button_text}")]',
-            )
-        ).click()

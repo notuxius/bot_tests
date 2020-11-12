@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import (
-    visibility_of_all_elements_located as elements_are_visible,
+    visibility_of_all_elements_located,
 )
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -26,20 +26,20 @@ class BotChatWindow:
         self.browser = browser
         self.browser.get(self.URL)
 
-    def wait_for_elements(self, *elem_locator):
+    def wait_for_elements(self, *elements_locators):
         # TODO refactor without sleep
         sleep(1)
         elements = WebDriverWait(self.browser, 5).until(
-            elements_are_visible(*elem_locator)
+            visibility_of_all_elements_located(*elements_locators)
         )
 
         return elements
 
-    def input_text(self, input):
+    def input_text(self, text_to_input):
         input_field = self.wait_for_elements(self.INPUT_FIELD)
 
         input_field[0].clear()
-        input_field[0].send_keys(input)
+        input_field[0].send_keys(text_to_input)
         input_field[0].send_keys(Keys.RETURN)
 
     def click_button(self, button_text):

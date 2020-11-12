@@ -29,20 +29,20 @@ def bot_chat_window(browser):
 
 
 @pytest.fixture
-def input_templates_text():
-    input_templates_text = {
+def inputs():
+    inputs = {
         "HELLO_TEXT": "привет",
         "START_SCENARIO_TEXT": "запусти сценарий",
         "DUMPLINGS_TEXT": "Пельмени",
         "PANCAKES_TEXT": "Блины",
     }
 
-    return input_templates_text
+    return inputs
 
 
 @pytest.fixture
-def response_templates_text():
-    response_templates_text = {
+def responses():
+    responses = {
         "HELLO_TEXT": "Привет!",
         "QUESTION_REMINDER_TEXT": "Напоминаю твой вопрос:",
         "OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT": "Хорошо. Давайте выберем подходящую еду.",
@@ -51,4 +51,4 @@ def response_templates_text():
         "BON_APPETIT_TEXT": "Приятного аппетита, бро! :)",
     }
 
-    return response_templates_text
+    return responses

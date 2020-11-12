@@ -45,14 +45,14 @@ class BotChatWindow:
 
         return elements
 
-    def input_text(self, input_text):
+    def input_text(self, input):
         input_field = self.wait_for_element(self.INPUT_FIELD)
 
         input_field.clear()
-        input_field.send_keys(input_text)
+        input_field.send_keys(input)
         input_field.send_keys(Keys.RETURN)
 
-    def response_text(self):
+    def actual_response_text(self):
         all_response_message_text = ""
         response_message_text = ""
 
@@ -67,7 +67,15 @@ class BotChatWindow:
 
             all_response_message_text += response_message_text
 
-        return all_response_message_text.strip()
+        return all_response_message_text.rstrip()
+
+    def expected_response_text(self, *text_to_assemble):
+        assembled_text = ""
+        for text in text_to_assemble:
+            print(text)
+            assembled_text += text + " "
+
+        return assembled_text.rstrip()
 
     def click_button(self, button_text):
         self.wait_for_element(

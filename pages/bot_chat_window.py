@@ -54,6 +54,7 @@ class BotChatWindow:
         all_response_message_text = ""
         response_message_text = ""
 
+        # TODO refactor into wait_for_elems
         sleep(5)
         response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
 

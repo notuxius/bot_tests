@@ -5,7 +5,7 @@ curr_dir = os.path.abspath(".")
 sys.path.insert(0, curr_dir)
 
 import pytest
-from pages.home import BotChatWindow
+from pages.bot_chat_window import BotChatWindow
 from selenium.webdriver import Chrome, ChromeOptions
 
 

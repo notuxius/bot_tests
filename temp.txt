@@ -11,19 +11,28 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "input_templates_text, response_templates_text",
+    "responses",
     [
         (
-            f"{input_templates_text['HELLO_TEXT']}",
-            f"{response_templates_text['HELLO_TEXT']}",
-        ),
-        (
-            f"{input_templates_text['START_SCENARIO_TEXT']}",
-            f"{response_templates_text['OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT']} {response_templates_text['WHAT_DO_YOU_WANT_TEXT']}",
+            bot_chat_window.expected_response_text(
+                responses["OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT"],
+                responses["WHAT_DO_YOU_WANT_TEXT"],
+            )
         ),
     ],
 )
-def test_food_scenario(bot_chat_window, input_templates_text, response_templates_text):
+def test_food_scenarios_responses(bot_chat_window, inputs, responses):
+    bot_chat_window.input_text(inputs["START_SCENARIO_TEXT"])
+    assert bot_chat_window.actual_response_text() == responses
+
+
+
+
+
+
+
+
+    
     bot_chat_window.load()
 
     bot_chat_window.input_text(input_templates_text)

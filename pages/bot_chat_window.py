@@ -44,6 +44,7 @@ class BotChatWindow:
 
     def click_button(self, button_text):
         self.wait_for_elements(
+            # TODO refactor into RESPONSE_BUTTON
             (
                 By.XPATH,
                 (
@@ -56,6 +57,7 @@ class BotChatWindow:
             )
         )[0].click()
 
+    # TODO autoappend responses["WHAT_DO_YOU_WANT_TEXT"] when necessary
     def assemble_text(self, *text_to_assemble):
         assembled_text = ""
 
@@ -73,5 +75,4 @@ class BotChatWindow:
         return self.assemble_text(*response_elements)
 
     def expected_response_text(self, *expected_text):
-
         return self.assemble_text(*expected_text)

@@ -1,6 +1,7 @@
 import pytest
 
 
+# TODO refactor info parametrize
 @pytest.mark.web
 @pytest.mark.smoke
 def test_hello_response(bot_chat_window, inputs, responses):

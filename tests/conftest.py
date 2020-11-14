@@ -38,9 +38,9 @@ def bot_chat_window(browser):
 def inputs():
     inputs = {
         "HELLO_INPUT_TEXT": "привет",
-        "START_SCENARIO_TEXT": "запусти сценарий",
-        "DUMPLINGS_TEXT": "Пельмени",
-        "PANCAKES_TEXT": "Блины",
+        "START_SCENARIO_INPUT_TEXT": "запусти сценарий",
+        "DUMPLINGS_INPUT_BUTTON_TEXT": "Пельмени",
+        "PANCAKES_INPUT_BUTTON_TEXT": "Блины",
     }
 
     return inputs
@@ -50,11 +50,11 @@ def inputs():
 def responses():
     responses = {
         "HELLO_RESPONSE_TEXT": "Привет!",
-        "QUESTION_REMINDER_TEXT": "Напоминаю твой вопрос:",
-        "OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT": "Хорошо. Давайте выберем подходящую еду.",
-        "WHAT_DO_YOU_WANT_TEXT": "Что вы хотите?",
-        "WRONG_CHOICE_LETS_TRY_AGAIN_TEXT": "Неправильный выбор. Давайте попробуем еще раз!))",
-        "BON_APPETIT_TEXT": "Приятного аппетита, бро! :)",
+        "QUESTION_REMINDER_RESPONSE_TEXT": "Напоминаю твой вопрос:",
+        "OK_LETS_CHOOSE_SUITABLE_FOOD_RESPONSE_TEXT": "Хорошо. Давайте выберем подходящую еду.",
+        "WHAT_DO_YOU_WANT_RESPONSE_TEXT": "Что вы хотите?",
+        "WRONG_CHOICE_LETS_TRY_AGAIN_RESPONSE_TEXT": "Неправильный выбор. Давайте попробуем еще раз!))",
+        "BON_APPETIT_RESPONSE_TEXT": "Приятного аппетита, бро! :)",
     }
 
     return responses

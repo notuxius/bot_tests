@@ -1,7 +1,6 @@
 ﻿from time import sleep
 
 import pytest
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import (
@@ -27,17 +26,17 @@ class BotChatWindow:
     def wait_for_elements(self, *elements_locators):
         # TODO refactor without sleep
         sleep(1)
-        elements = WebDriverWait(self.browser, 5).until(
+        elements = WebDriverWait(self.browser, 2).until(
             visibility_of_all_elements_located(*elements_locators)
         )
 
         return elements
 
-    def enter_text(self, text_to_input):
+    def enter_text(self, text_to_enter):
         input_field = self.wait_for_elements(self.INPUT_FIELD)
 
         input_field[0].clear()
-        input_field[0].send_keys(text_to_input)
+        input_field[0].send_keys(text_to_enter)
         input_field[0].send_keys(Keys.RETURN)
 
     def click_button(self, button_text):
@@ -55,15 +54,14 @@ class BotChatWindow:
             )
         )[0].click()
 
-    def make_action(self, action_type, element_for_action):
+    def make_action(self, action_type, element_text):
 
-        if action_type == "click_button":
-            self.click_button(element_for_action)
+        if action_type == "click button":
+            self.click_button(element_text)
 
-        elif action_type == "enter_text":
-            self.enter_text(element_for_action)
+        elif action_type == "enter text":
+            self.enter_text(element_text)
 
-    # TODO autoappend responses["WHAT_DO_YOU_WANT_TEXT"] when necessary
     def extract_and_assemble_text(self, inputs, responses, *elements):
         assembled_text = ""
         element_text = ""
@@ -101,5 +99,13 @@ class BotChatWindow:
             inputs, responses, *expected_response_elements
         )
 
-    def expected_response_is_correct(self):
-        pass
+    def expected_response_is_correct(
+        self, actual_response_text, response_check_condition, expected_response_text
+    ):
+        if response_check_condition == "response is equal":
+            return actual_response_text == expected_response_text
+
+        elif response_check_condition == "response is not equal":
+            return not actual_response_text == expected_response_text
+
+        return False

@@ -9,13 +9,18 @@ from pages.bot_chat_window import BotChatWindow
 from selenium.webdriver import Chrome, ChromeOptions
 
 
-@pytest.fixture
+URL = "https://autofaq.ai/awsbotkate"
+
+
+@pytest.fixture(scope="module")
 def browser():
     options = ChromeOptions()
     options.add_argument("-start-maximized")
 
     browser_location = os.path.join(curr_dir, "chromedriver.exe")
     browser = Chrome(options=options, executable_path=browser_location)
+
+    browser.get(URL)
 
     yield browser
 
@@ -32,7 +37,7 @@ def bot_chat_window(browser):
 @pytest.fixture
 def inputs():
     inputs = {
-        "HELLO_TEXT": "привет",
+        "HELLO_INPUT_TEXT": "привет",
         "START_SCENARIO_TEXT": "запусти сценарий",
         "DUMPLINGS_TEXT": "Пельмени",
         "PANCAKES_TEXT": "Блины",
@@ -44,7 +49,7 @@ def inputs():
 @pytest.fixture
 def responses():
     responses = {
-        "HELLO_TEXT": "Привет!",
+        "HELLO_RESPONSE_TEXT": "Привет!",
         "QUESTION_REMINDER_TEXT": "Напоминаю твой вопрос:",
         "OK_LETS_CHOOSE_SUITABLE_FOOD_TEXT": "Хорошо. Давайте выберем подходящую еду.",
         "WHAT_DO_YOU_WANT_TEXT": "Что вы хотите?",

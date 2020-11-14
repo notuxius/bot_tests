@@ -8,11 +8,10 @@ from selenium.webdriver.support.expected_conditions import (
     visibility_of_all_elements_located,
 )
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class BotChatWindow:
-    URL = "https://autofaq.ai/awsbotkate"
-
     INPUT_FIELD = (By.CSS_SELECTOR, "textarea#chat21-main-message-context")
     RESPONSE_MESSAGE = (
         By.XPATH,
@@ -24,7 +23,6 @@ class BotChatWindow:
 
     def __init__(self, browser):
         self.browser = browser
-        self.browser.get(self.URL)
 
     def wait_for_elements(self, *elements_locators):
         # TODO refactor without sleep
@@ -35,7 +33,7 @@ class BotChatWindow:
 
         return elements
 
-    def input_text(self, text_to_input):
+    def enter_text(self, text_to_input):
         input_field = self.wait_for_elements(self.INPUT_FIELD)
 
         input_field[0].clear()
@@ -57,22 +55,51 @@ class BotChatWindow:
             )
         )[0].click()
 
+    def make_action(self, action_type, element_for_action):
+
+        if action_type == "click_button":
+            self.click_button(element_for_action)
+
+        elif action_type == "enter_text":
+            self.enter_text(element_for_action)
+
     # TODO autoappend responses["WHAT_DO_YOU_WANT_TEXT"] when necessary
-    def assemble_text(self, *text_to_assemble):
+    def extract_and_assemble_text(self, inputs, responses, *elements):
         assembled_text = ""
+        element_text = ""
 
-        for text in text_to_assemble:
-            if not isinstance(text, str):
-                text = text.text
+        for element in elements:
+            if isinstance(element, WebElement):
+                element_text = element.text
 
-            assembled_text += text + " "
+            elif isinstance(element, list):
+                for element_list_text in element:
+                    try:
+                        element_text += responses[element_list_text]
+
+                    except KeyError:
+                        element_text += inputs[element_list_text]
+
+                    element_text += " "
+
+            else:
+                element_text = responses[element]
+
+            assembled_text += element_text + " "
 
         return assembled_text.rstrip()
 
-    def actual_response_text(self):
-        response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
+    def actual_response_text(self, inputs, responses):
+        actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
 
-        return self.assemble_text(*response_elements)
+        return self.extract_and_assemble_text(
+            inputs, responses, *actual_response_elements
+        )
 
-    def expected_response_text(self, *expected_text):
-        return self.assemble_text(*expected_text)
+    def expected_response_text(self, inputs, responses, *expected_response_elements):
+        return self.extract_and_assemble_text(
+            inputs, responses, *expected_response_elements
+        )
+
+    def expected_response_is_correct(self):
+        pass

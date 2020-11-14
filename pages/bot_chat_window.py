@@ -11,7 +11,14 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 class BotChatWindow:
-    INPUT_FIELD = (By.CSS_SELECTOR, "textarea#chat21-main-message-context")
+    INPUT_AREA = (By.CSS_SELECTOR, "textarea#chat21-main-message-context")
+    INPUT_BUTTON = (
+        By.XPATH,
+        (
+            '//div[contains(@class,"msg_block-last")]'
+            '//button[contains(@class, "button") and (.="")]'
+        ),
+    )
     RESPONSE_MESSAGE = (
         By.XPATH,
         (
@@ -33,26 +40,22 @@ class BotChatWindow:
         return elements
 
     def enter_text(self, text_to_enter):
-        input_field = self.wait_for_elements(self.INPUT_FIELD)
+        input_area = self.wait_for_elements(self.INPUT_AREA)
 
-        input_field[0].clear()
-        input_field[0].send_keys(text_to_enter)
-        input_field[0].send_keys(Keys.RETURN)
+        input_area[0].clear()
+        input_area[0].send_keys(text_to_enter)
+        input_area[0].send_keys(Keys.RETURN)
+
+    def prepare_button(self, button_text):
+        prepared_button = (
+            self.INPUT_BUTTON[0],
+            self.INPUT_BUTTON[1].replace('(.="")', f'(.="{button_text}")'),
+        )
+
+        return prepared_button
 
     def click_button(self, button_text):
-        self.wait_for_elements(
-            # TODO refactor into RESPONSE_BUTTON
-            (
-                By.XPATH,
-                (
-                    (
-                        '//div[contains(@class,"msg_block-last")]'
-                        '//button[contains(@class, "button")'
-                        f' and (.="{button_text}")]'
-                    )
-                ),
-            )
-        )[0].click()
+        self.wait_for_elements(self.prepare_button(button_text))[0].click()
 
     def make_action(self, action_type, element_text):
 
@@ -104,8 +107,5 @@ class BotChatWindow:
     ):
         if response_check_condition == "response is equal":
             return actual_response_text == expected_response_text
-
-        elif response_check_condition == "response is not equal":
-            return not actual_response_text == expected_response_text
 
         return False

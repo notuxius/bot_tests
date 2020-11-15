@@ -1,25 +1,26 @@
 import os
 import sys
 
+import pytest
+
+
 curr_dir = os.path.abspath(".")
 sys.path.insert(0, curr_dir)
 
-import pytest
-from pages.bot_chat_window import BotChatWindow
-from selenium.webdriver import Chrome, ChromeOptions
-
-URL = "https://autofaq.ai/awsbotkate"
+WIDGET_URL = "https://autofaq.ai/awsbotkate"
 
 
 @pytest.fixture(scope="module")
 def browser():
+    from selenium.webdriver import Chrome, ChromeOptions
+
     options = ChromeOptions()
     options.add_argument("-start-maximized")
 
     browser_location = os.path.join(curr_dir, "chromedriver.exe")
     browser = Chrome(options=options, executable_path=browser_location)
 
-    browser.get(URL)
+    browser.get(WIDGET_URL)
 
     yield browser
 
@@ -27,10 +28,12 @@ def browser():
 
 
 @pytest.fixture
-def bot_chat_window(browser):
-    bot_chat_window = BotChatWindow(browser)
+def bot_chat_widget(browser):
+    from pages.bot_chat_widget import BotChatWidget
 
-    return bot_chat_window
+    bot_chat_widget = BotChatWidget(browser)
+
+    return bot_chat_widget
 
 
 # access to text is provided via inputs/responses[KEY_NAME] in scripts
@@ -60,3 +63,23 @@ def responses(inputs):
     }
 
     return responses
+
+
+@pytest.fixture
+def bot_chat_api(token):
+    from pages.bot_chat_api import BotChatAPI
+
+    bot_chat_api = BotChatAPI(token)
+
+    return bot_chat_api
+
+
+def pytest_addoption(parser):
+    parser.addoption("--token", action="store", default="secret")
+
+
+def pytest_generate_tests(metafunc):
+    option_value = metafunc.config.option.token
+
+    if "token" in metafunc.fixturenames and option_value is not None:
+        metafunc.parametrize("token", [option_value])

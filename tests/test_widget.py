@@ -36,17 +36,17 @@ import pytest
         ),
     ],
 )
-@pytest.mark.web
+@pytest.mark.widget
 def test_food_scenarios_responses(
-    bot_chat_window,
+    bot_chat_widget,
     inputs,
     responses,
     action_type,
     inputs_text,
     expected_response_text,
 ):
-    bot_chat_window.make_action(action_type, inputs[inputs_text])
+    bot_chat_widget.make_action(action_type, inputs[inputs_text])
 
-    assert bot_chat_window.get_actual_response_text(
+    assert bot_chat_widget.get_actual_response_text(
         responses
-    ) == bot_chat_window.get_expected_response_text(responses, expected_response_text)
+    ) == bot_chat_widget.get_expected_response_text(responses, expected_response_text)

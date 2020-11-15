@@ -1,6 +1,12 @@
-# bot_tests
+# AutoFAQ widget/API tests
 
-Run tests with:
-pytest.exe -m web .\tests\test_web.py -vv
+# Widget tests:
+pytest.exe .\tests\test_widget.py -vv
 
-Looking for executable of webdriver in the project directory by default
+# API tests:
+pytest.exe --token=USER_TOKEN .\tests\test_api.py -vv
+
+# Additional:
+Widget tests are looking for executable of webdriver in the root project directory by default.
+
+Your user token is provided via --token=USER_TOKEN option

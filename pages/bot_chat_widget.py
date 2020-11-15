@@ -9,7 +9,7 @@ from selenium.webdriver.support.expected_conditions import (
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-class BotChatWindow:
+class BotChatWidget:
     INPUT_AREA = (By.TAG_NAME, "textarea")
     INPUT_BUTTON = (
         By.XPATH,

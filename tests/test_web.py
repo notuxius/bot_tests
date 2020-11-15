@@ -52,8 +52,8 @@ def test_food_scenarios_responses(
 ):
     bot_chat_window.make_action(action_type, inputs[input_text])
 
-    assert bot_chat_window.expected_response_is_correct(
-        bot_chat_window.actual_response_text(inputs, responses),
+    assert bot_chat_window.check_expected_response_is_correct(
+        bot_chat_window.get_actual_response_text(inputs, responses),
         response_check_condition,
-        bot_chat_window.expected_response_text(inputs, responses, response_text),
+        bot_chat_window.get_expected_response_text(inputs, responses, response_text),
     )

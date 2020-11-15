@@ -1,13 +1,12 @@
 ﻿from time import sleep
 
-import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.expected_conditions import (
     visibility_of_all_elements_located,
 )
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.remote.webelement import WebElement
 
 
 class BotChatWindow:
@@ -31,9 +30,7 @@ class BotChatWindow:
         self.browser = browser
 
     def wait_for_elements(self, *elements_locators):
-        # TODO refactor without sleep
-        sleep(1)
-        elements = WebDriverWait(self.browser, 2).until(
+        elements = WebDriverWait(self.browser, 5).until(
             visibility_of_all_elements_located(*elements_locators)
         )
 
@@ -58,12 +55,11 @@ class BotChatWindow:
         self.wait_for_elements(self.prepare_button(button_text))[0].click()
 
     def make_action(self, action_type, element_text):
-
-        if action_type == "click button":
-            self.click_button(element_text)
-
-        elif action_type == "enter text":
+        if action_type == "enter text":
             self.enter_text(element_text)
+
+        elif action_type == "click button":
+            self.click_button(element_text)
 
     def extract_and_assemble_text(self, inputs, responses, *elements):
         assembled_text = ""
@@ -74,12 +70,12 @@ class BotChatWindow:
                 element_text = element.text
 
             elif isinstance(element, list):
-                for element_list_text in element:
+                for element_list in element:
                     try:
-                        element_text += responses[element_list_text]
+                        element_text += responses[element_list]
 
                     except KeyError:
-                        element_text += inputs[element_list_text]
+                        element_text += inputs[element_list]
 
                     element_text += " "
 
@@ -90,22 +86,41 @@ class BotChatWindow:
 
         return assembled_text.rstrip()
 
-    def actual_response_text(self, inputs, responses):
-        actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
+    def get_actual_response_text(self, inputs, responses):
+        previous_elements = ""
 
-        return self.extract_and_assemble_text(
-            inputs, responses, *actual_response_elements
-        )
+        for _ in range(10):
+            actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
+            extracted_and_assembled_text = self.extract_and_assemble_text(
+                inputs, responses, *actual_response_elements
+            )
 
-    def expected_response_text(self, inputs, responses, *expected_response_elements):
+            if (
+                not extracted_and_assembled_text
+                or extracted_and_assembled_text == responses["INITIAL_RESPONSE_TEXT"]
+                or not previous_elements
+                or actual_response_elements == previous_elements
+            ):
+                previous_elements = actual_response_elements
+                sleep(0.25)
+                continue
+
+            return extracted_and_assembled_text
+
+    def get_expected_response_text(
+        self, inputs, responses, *expected_response_elements
+    ):
         return self.extract_and_assemble_text(
             inputs, responses, *expected_response_elements
         )
 
-    def expected_response_is_correct(
-        self, actual_response_text, response_check_condition, expected_response_text
+    def check_expected_response_is_correct(
+        self,
+        get_actual_response_text,
+        response_check_condition,
+        get_expected_response_text,
     ):
         if response_check_condition == "response is equal":
-            return actual_response_text == expected_response_text
+            return get_actual_response_text == get_expected_response_text
 
         return False

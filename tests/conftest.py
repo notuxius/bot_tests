@@ -8,7 +8,6 @@ import pytest
 from pages.bot_chat_window import BotChatWindow
 from selenium.webdriver import Chrome, ChromeOptions
 
-
 URL = "https://autofaq.ai/awsbotkate"
 
 
@@ -49,6 +48,7 @@ def inputs():
 @pytest.fixture
 def responses():
     responses = {
+        "INITIAL_RESPONSE_TEXT": "Здравствуйте! Напишите пожалуйста, свой вопрос и я постараюсь вам ответить! 😊",
         "HELLO_RESPONSE_TEXT": "Привет!",
         "QUESTION_REMINDER_RESPONSE_TEXT": "Напоминаю твой вопрос:",
         "OK_LETS_CHOOSE_SUITABLE_FOOD_RESPONSE_TEXT": "Хорошо. Давайте выберем подходящую еду.",

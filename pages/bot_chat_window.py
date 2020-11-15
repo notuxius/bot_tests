@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BotChatWindow:
-    INPUT_AREA = (By.CSS_SELECTOR, "textarea#chat21-main-message-context")
+    INPUT_AREA = (By.TAG_NAME, "textarea")
     INPUT_BUTTON = (
         By.XPATH,
         (
@@ -19,11 +19,8 @@ class BotChatWindow:
         ),
     )
     RESPONSE_MESSAGE = (
-        By.XPATH,
-        (
-            '//div[contains(@class,"msg_block-last")]'
-            '//div[contains(@class, "msg_receive")]'
-        ),
+        By.CSS_SELECTOR,
+        ("div.msg_block-last div.msg_receive"),
     )
 
     def __init__(self, browser):

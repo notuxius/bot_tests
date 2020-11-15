@@ -113,14 +113,3 @@ class BotChatWindow:
         return self.extract_and_assemble_text(
             inputs, responses, *expected_response_elements
         )
-
-    def check_expected_response_is_correct(
-        self,
-        get_actual_response_text,
-        response_check_condition,
-        get_expected_response_text,
-    ):
-        if response_check_condition == "response is equal":
-            return get_actual_response_text == get_expected_response_text
-
-        return False

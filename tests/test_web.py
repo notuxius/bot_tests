@@ -2,18 +2,16 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "action_type, input_text, response_check_condition, response_text",
+    "action_type, input_text, expected_response_text",
     [
         (
             "enter text",
             "HELLO_INPUT_TEXT",
-            "response is equal",
             "HELLO_RESPONSE_TEXT",
         ),
         (
             "enter text",
             "START_SCENARIO_INPUT_TEXT",
-            "response is equal",
             [
                 "OK_LETS_CHOOSE_SUITABLE_FOOD_RESPONSE_TEXT",
                 "WHAT_DO_YOU_WANT_RESPONSE_TEXT",
@@ -22,7 +20,6 @@ import pytest
         (
             "click button",
             "DUMPLINGS_INPUT_BUTTON_TEXT",
-            "response is equal",
             [
                 "WRONG_CHOICE_LETS_TRY_AGAIN_RESPONSE_TEXT",
                 "WHAT_DO_YOU_WANT_RESPONSE_TEXT",
@@ -31,7 +28,6 @@ import pytest
         (
             "click button",
             "PANCAKES_INPUT_BUTTON_TEXT",
-            "response is equal",
             [
                 "QUESTION_REMINDER_RESPONSE_TEXT",
                 "START_SCENARIO_INPUT_TEXT",
@@ -47,13 +43,12 @@ def test_food_scenarios_responses(
     responses,
     action_type,
     input_text,
-    response_check_condition,
-    response_text,
+    expected_response_text,
 ):
     bot_chat_window.make_action(action_type, inputs[input_text])
 
-    assert bot_chat_window.check_expected_response_is_correct(
-        bot_chat_window.get_actual_response_text(inputs, responses),
-        response_check_condition,
-        bot_chat_window.get_expected_response_text(inputs, responses, response_text),
+    assert bot_chat_window.get_actual_response_text(
+        inputs, responses
+    ) == bot_chat_window.get_expected_response_text(
+        inputs, responses, expected_response_text
     )

@@ -91,25 +91,24 @@ class BotChatWindow:
 
         for _ in range(10):
             actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
-            extracted_and_assembled_text = self.extract_and_assemble_text(
+            actual_response_text = self.extract_and_assemble_text(
                 inputs, responses, *actual_response_elements
             )
 
+            if not previous_elements:
+                previous_elements = actual_response_elements
+                continue
+
             if (
-                not extracted_and_assembled_text
-                or extracted_and_assembled_text == responses["INITIAL_RESPONSE_TEXT"]
-                or not previous_elements
+                not actual_response_text
+                or actual_response_text == responses["INITIAL_RESPONSE_TEXT"]
                 or actual_response_elements == previous_elements
             ):
                 previous_elements = actual_response_elements
                 sleep(0.25)
                 continue
 
-            return extracted_and_assembled_text
+            return actual_response_text
 
-    def get_expected_response_text(
-        self, inputs, responses, *expected_response_elements
-    ):
-        return self.extract_and_assemble_text(
-            inputs, responses, *expected_response_elements
-        )
+    def get_expected_response_text(self, inputs, responses, *response_text):
+        return self.extract_and_assemble_text(inputs, responses, *response_text)

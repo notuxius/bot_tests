@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "action_type, input_text, expected_response_text",
+    "action_type, input_text, response_text",
     [
         (
             "enter text",
@@ -43,12 +43,10 @@ def test_food_scenarios_responses(
     responses,
     action_type,
     input_text,
-    expected_response_text,
+    response_text,
 ):
     bot_chat_window.make_action(action_type, inputs[input_text])
 
     assert bot_chat_window.get_actual_response_text(
         inputs, responses
-    ) == bot_chat_window.get_expected_response_text(
-        inputs, responses, expected_response_text
-    )
+    ) == bot_chat_window.get_expected_response_text(inputs, responses, response_text)

@@ -48,5 +48,5 @@ def test_food_scenarios_responses(
     bot_chat_window.make_action(action_type, inputs[inputs_text])
 
     assert bot_chat_window.get_actual_response_text(
-        inputs, responses
+        responses
     ) == bot_chat_window.get_expected_response_text(responses, expected_response_text)

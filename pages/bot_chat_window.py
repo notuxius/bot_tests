@@ -82,23 +82,19 @@ class BotChatWindow:
 
         return assembled_text.rstrip()
 
-    def get_actual_response_text(self, inputs, responses):
+    def get_actual_response_text(self, responses):
         previous_elements = ""
 
         # try few times to locate needed elemens
-        for _ in range(10):
+        for _ in range(20):
             actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
             actual_response_text = self.extract_and_assemble_text(
                 responses, *actual_response_elements
             )
 
-            # TODO refactor locating/identifying previous/current elements
-            if not previous_elements:
-                previous_elements = actual_response_elements
-                continue
-
             if (
-                actual_response_elements == previous_elements
+                not previous_elements
+                or actual_response_elements == previous_elements
                 # sometimes actual response text is returned as None
                 or not actual_response_text
                 or actual_response_text == responses["INITIAL_RESPONSE_TEXT"]

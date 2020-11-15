@@ -54,12 +54,12 @@ class BotChatWindow:
         self.wait_for_elements(self.prepare_button(button_text))[0].click()
 
     # launch methods depending on action type provided
-    def make_action(self, action_type, element_text):
+    def make_action(self, action_type, inputs_text):
         if action_type == "enter text":
-            self.enter_text(element_text)
+            self.enter_text(inputs_text)
 
         elif action_type == "click button":
-            self.click_button(element_text)
+            self.click_button(inputs_text)
 
     # text is taken from web element or from responses dict
     # from multi items by list or single item by its key
@@ -89,7 +89,7 @@ class BotChatWindow:
         for _ in range(10):
             actual_response_elements = self.wait_for_elements(self.RESPONSE_MESSAGE)
             actual_response_text = self.extract_and_assemble_text(
-                inputs, responses, *actual_response_elements
+                responses, *actual_response_elements
             )
 
             # TODO refactor locating/identifying previous/current elements

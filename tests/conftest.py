@@ -33,6 +33,7 @@ def bot_chat_window(browser):
     return bot_chat_window
 
 
+# access to text is provided via inputs/responses[KEY_NAME] in scripts
 @pytest.fixture
 def inputs():
     inputs = {
@@ -46,10 +47,11 @@ def inputs():
 
 
 @pytest.fixture
-def responses():
+def responses(inputs):
     responses = {
         "INITIAL_RESPONSE_TEXT": "Здравствуйте! Напишите пожалуйста, свой вопрос и я постараюсь вам ответить! 😊",
         "HELLO_RESPONSE_TEXT": "Привет!",
+        "START_SCENARIO_INPUT_TEXT": f'{inputs["START_SCENARIO_INPUT_TEXT"]}',
         "QUESTION_REMINDER_RESPONSE_TEXT": "Напоминаю твой вопрос:",
         "OK_LETS_CHOOSE_SUITABLE_FOOD_RESPONSE_TEXT": "Хорошо. Давайте выберем подходящую еду.",
         "WHAT_DO_YOU_WANT_RESPONSE_TEXT": "Что вы хотите?",

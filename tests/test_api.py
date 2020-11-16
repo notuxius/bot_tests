@@ -2,9 +2,7 @@ import pytest
 
 
 @pytest.mark.api
-def test_service(bot_chat_api, token):
-
-    user_token = token
+def test_service(bot_chat_api):
 
     # create service
     service_params = {
@@ -19,7 +17,9 @@ def test_service(bot_chat_api, token):
 
     # get document_id
     documents = bot_chat_api.http_get(f"/services/{service_id}/documents")
+
     assert len(documents) == 1
+
     document_id = documents[0]["document_id"]
 
     # CREATE
@@ -34,6 +34,7 @@ def test_service(bot_chat_api, token):
 
     # READ
     response = bot_chat_api.http_get(f"/paraphrases/{paraphrase_id}")
+
     assert response["paraphrase_id"] == paraphrase_id
     assert response["paraphrase"] == paraphrase_params["paraphrase"]
 
@@ -41,6 +42,7 @@ def test_service(bot_chat_api, token):
     response = bot_chat_api.http_put(
         f"/paraphrases/{paraphrase_id}", params={"paraphrase": "what`s the point"}
     )
+
     assert "updated" in response["message"]
 
     # DELETE

@@ -10,21 +10,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BotChatWidget:
-    INPUT_AREA = (By.TAG_NAME, "textarea")
-    INPUT_BUTTON = (
-        By.XPATH,
-        (
-            '//div[contains(@class,"msg_block-last")]'
-            '//button[contains(@class, "button") and (.="")]'
-        ),
-    )
-    RESPONSE_MESSAGE = (
-        By.CSS_SELECTOR,
-        ("div.msg_block-last div.msg_receive"),
-    )
-
-    def __init__(self, browser):
+    def __init__(self, browser, load_widget):
         self.browser = browser
+
+        self.INPUT_AREA = (By.TAG_NAME, "textarea")
+        self.INPUT_BUTTON = (
+            By.XPATH,
+            (
+                '//div[contains(@class,"msg_block-last")]'
+                '//button[contains(@class, "button") and (.="")]'
+            ),
+        )
+        self.RESPONSE_MESSAGE = (
+            By.CSS_SELECTOR,
+            ("div.msg_block-last div.msg_receive"),
+        )
 
     def wait_for_elements(self, *elements_locators):
         elements = WebDriverWait(self.browser, 5).until(

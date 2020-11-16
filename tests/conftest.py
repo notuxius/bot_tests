@@ -7,8 +7,6 @@ import pytest
 curr_dir = os.path.abspath(".")
 sys.path.insert(0, curr_dir)
 
-WIDGET_URL = "https://autofaq.ai/awsbotkate"
-
 
 @pytest.fixture(scope="module")
 def browser():
@@ -20,18 +18,24 @@ def browser():
     browser_location = os.path.join(curr_dir, "chromedriver.exe")
     browser = Chrome(options=options, executable_path=browser_location)
 
-    browser.get(WIDGET_URL)
-
     yield browser
 
     browser.quit()
 
 
+WIDGET_URL = "https://autofaq.ai/awsbotkate"
+
+
+@pytest.fixture(scope="module")
+def load_widget(browser):
+    browser.get(WIDGET_URL)
+
+
 @pytest.fixture
-def bot_chat_widget(browser):
+def bot_chat_widget(browser, load_widget):
     from pages.bot_chat_widget import BotChatWidget
 
-    bot_chat_widget = BotChatWidget(browser)
+    bot_chat_widget = BotChatWidget(browser, load_widget)
 
     return bot_chat_widget
 
